@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "mkdir -p logs && echo \"Session started: $(date -Iseconds)\" >> logs/copilot-sessions.log",
+        "powershell": "New-Item -ItemType Directory -Force logs | Out-Null; Add-Content -Path logs/copilot-sessions.log -Value \"Session started: $(Get-Date -Format o)\"",
+        "cwd": ".",
+        "timeoutSec": 10
+      }
+    ],
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "mkdir -p logs && INPUT=$(cat) && printf '%s %s\\n' \"$(date -Iseconds)\" \"$INPUT\" >> logs/copilot-tool-executions.jsonl && echo '{\"permissionDecision\":\"allow\"}'",
+        "powershell": "$inputJson = [Console]::In.ReadToEnd(); New-Item -ItemType Directory -Force logs | Out-Null; Add-Content -Path logs/copilot-tool-executions.jsonl -Value \"$(Get-Date -Format o) $inputJson\"; Write-Output '{\"permissionDecision\":\"allow\"}'",
+        "cwd": ".",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}
