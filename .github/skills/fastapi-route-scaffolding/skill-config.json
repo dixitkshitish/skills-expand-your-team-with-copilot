@@ -1,0 +1,356 @@
+{
+  "skill_metadata": {
+    "name": "FastAPI Route and MongoDB Model Scaffolding",
+    "version": "1.0.0",
+    "id": "fastapi-route-scaffolding",
+    "description": "Automatically generates FastAPI routes, Pydantic models, and MongoDB repositories for new API features",
+    "author": "Mergington High School Development Team",
+    "created": "2024-06-02",
+    "updated": "2024-06-02",
+    "status": "production"
+  },
+  "skill_configuration": {
+    "trigger_keywords": [
+      "create.*api.*route",
+      "new.*endpoint",
+      "add.*crud.*operation",
+      "scaffold.*fastapi",
+      "generate.*model",
+      "create.*repository"
+    ],
+    "supported_operations": [
+      "create",
+      "read",
+      "update",
+      "delete",
+      "list",
+      "search",
+      "filter",
+      "paginate"
+    ],
+    "language": "python",
+    "framework": "fastapi",
+    "database": "mongodb",
+    "script_path": ".github/skills/fastapi-route-scaffolding/scripts/route_scaffolder.py"
+  },
+  "example_scenarios": {
+    "scenario_1_attendance_tracking": {
+      "title": "Create Attendance Tracking API",
+      "user_request": "Create an API for tracking student attendance at activities with fields for student_id, activity_id, attended status, date, and optional notes.",
+      "script_command": [
+        "python",
+        ".github/skills/fastapi-route-scaffolding/scripts/route_scaffolder.py",
+        "--name", "attendance",
+        "--fields", "student_id:str,activity_id:str,attended:bool,date_assigned:str,notes:str"
+      ],
+      "generated_files": [
+        "src/backend/models/attendance.py",
+        "src/backend/repositories/attendance.py",
+        "src/backend/routers/attendance.py",
+        "tests/test_attendance.py"
+      ],
+      "files_to_update": [
+        "src/app.py",
+        "src/backend/database.py"
+      ],
+      "expected_endpoints": [
+        "GET /attendance - List attendance records",
+        "POST /attendance - Create new attendance record",
+        "GET /attendance/{attendance_id} - Get single record",
+        "PUT /attendance/{attendance_id} - Update record",
+        "DELETE /attendance/{attendance_id} - Delete record"
+      ],
+      "estimated_lines_of_code": 450
+    },
+    "scenario_2_grade_management": {
+      "title": "Create Grade Management API",
+      "user_request": "Build a grades management endpoint with student_id, activity_id, score (0-100), and date_assigned fields. Include filtering by student and activity.",
+      "script_command": [
+        "python",
+        ".github/skills/fastapi-route-scaffolding/scripts/route_scaffolder.py",
+        "--name", "grades",
+        "--fields", "student_id:str,activity_id:str,score:int,date_assigned:str"
+      ],
+      "generated_files": [
+        "src/backend/models/grades.py",
+        "src/backend/repositories/grades.py",
+        "src/backend/routers/grades.py",
+        "tests/test_grades.py"
+      ],
+      "files_to_update": [
+        "src/app.py",
+        "src/backend/database.py"
+      ],
+      "expected_endpoints": [
+        "GET /grades - List all grades",
+        "POST /grades - Create new grade",
+        "GET /grades/{grade_id} - Get single grade",
+        "PUT /grades/{grade_id} - Update grade",
+        "DELETE /grades/{grade_id} - Delete grade",
+        "GET /grades/student/{student_id} - Get student's grades",
+        "GET /grades/activity/{activity_id} - Get activity grades"
+      ],
+      "customizations_needed": [
+        "Add score range validator (0-100)",
+        "Add date format validator (ISO 8601)",
+        "Add average calculation method",
+        "Add authorization check (teacher only)"
+      ],
+      "estimated_lines_of_code": 550
+    },
+    "scenario_3_student_profiles": {
+      "title": "Create Student Profile Management API",
+      "user_request": "Create an API for managing student profiles with first_name, last_name, email, grade_level, enrollment_status, and gpa.",
+      "script_command": [
+        "python",
+        ".github/skills/fastapi-route-scaffolding/scripts/route_scaffolder.py",
+        "--name", "student_profiles",
+        "--fields", "first_name:str,last_name:str,email:str,grade_level:int,enrollment_status:str,gpa:float"
+      ],
+      "generated_files": [
+        "src/backend/models/student_profiles.py",
+        "src/backend/repositories/student_profiles.py",
+        "src/backend/routers/student_profiles.py",
+        "tests/test_student_profiles.py"
+      ],
+      "files_to_update": [
+        "src/app.py",
+        "src/backend/database.py"
+      ],
+      "expected_endpoints": [
+        "GET /student_profiles - List all students",
+        "POST /student_profiles - Create new student",
+        "GET /student_profiles/{student_id} - Get student details",
+        "PUT /student_profiles/{student_id} - Update student",
+        "DELETE /student_profiles/{student_id} - Remove student"
+      ],
+      "customizations_needed": [
+        "Add email format validator",
+        "Add grade_level range validator (9-12)",
+        "Add enrollment_status enum (active, inactive, graduated)",
+        "Add GPA validation (0.0-4.0)",
+        "Add uniqueness check for email",
+        "Add search by name endpoint"
+      ],
+      "estimated_lines_of_code": 600
+    },
+    "scenario_4_teacher_schedules": {
+      "title": "Create Teacher Schedule API",
+      "user_request": "Build an API for managing teacher schedules with fields: teacher_id, day_of_week, start_time, end_time, activity_id, location.",
+      "script_command": [
+        "python",
+        ".github/skills/fastapi-route-scaffolding/scripts/route_scaffolder.py",
+        "--name", "teacher_schedules",
+        "--fields", "teacher_id:str,day_of_week:str,start_time:str,end_time:str,activity_id:str,location:str"
+      ],
+      "generated_files": [
+        "src/backend/models/teacher_schedules.py",
+        "src/backend/repositories/teacher_schedules.py",
+        "src/backend/routers/teacher_schedules.py",
+        "tests/test_teacher_schedules.py"
+      ],
+      "files_to_update": [
+        "src/app.py",
+        "src/backend/database.py"
+      ],
+      "expected_endpoints": [
+        "GET /teacher_schedules - List all schedules",
+        "POST /teacher_schedules - Create new schedule",
+        "GET /teacher_schedules/{schedule_id} - Get schedule",
+        "PUT /teacher_schedules/{schedule_id} - Update schedule",
+        "DELETE /teacher_schedules/{schedule_id} - Delete schedule",
+        "GET /teacher_schedules/teacher/{teacher_id} - Get teacher's schedule"
+      ],
+      "customizations_needed": [
+        "Add day validation (Monday-Sunday)",
+        "Add time format validation (HH:MM)",
+        "Add conflict detection (overlapping schedules)",
+        "Add iCalendar export",
+        "Add teacher availability check"
+      ],
+      "estimated_lines_of_code": 600
+    },
+    "scenario_5_activity_signups": {
+      "title": "Create Activity Signup Management API",
+      "user_request": "Create an API for managing activity signups with student_id, activity_id, signup_date, and status (pending, approved, rejected, cancelled).",
+      "script_command": [
+        "python",
+        ".github/skills/fastapi-route-scaffolding/scripts/route_scaffolder.py",
+        "--name", "activity_signups",
+        "--fields", "student_id:str,activity_id:str,signup_date:str,status:str"
+      ],
+      "generated_files": [
+        "src/backend/models/activity_signups.py",
+        "src/backend/repositories/activity_signups.py",
+        "src/backend/routers/activity_signups.py",
+        "tests/test_activity_signups.py"
+      ],
+      "files_to_update": [
+        "src/app.py",
+        "src/backend/database.py"
+      ],
+      "expected_endpoints": [
+        "GET /activity_signups - List all signups",
+        "POST /activity_signups - Create new signup",
+        "GET /activity_signups/{signup_id} - Get signup",
+        "PUT /activity_signups/{signup_id} - Update signup status",
+        "DELETE /activity_signups/{signup_id} - Cancel signup",
+        "GET /activity_signups/student/{student_id} - Get student's signups",
+        "GET /activity_signups/activity/{activity_id} - Get activity participants"
+      ],
+      "customizations_needed": [
+        "Add status enum validation",
+        "Add duplicate signup prevention",
+        "Add capacity check for activities",
+        "Add auto-approval workflow",
+        "Add email notifications for status changes",
+        "Add waitlist support"
+      ],
+      "estimated_lines_of_code": 700
+    }
+  },
+  "field_types_supported": [
+    "str",
+    "int",
+    "float",
+    "bool",
+    "list",
+    "dict",
+    "datetime",
+    "date",
+    "time"
+  ],
+  "generated_components": {
+    "pydantic_models": {
+      "description": "Validation models with Create, Update, and Response variants",
+      "location": "src/backend/models/{module}.py",
+      "includes": [
+        "Field validation",
+        "Type hints",
+        "JSON schema examples",
+        "Documentation"
+      ]
+    },
+    "repository": {
+      "description": "Data access layer with CRUD operations",
+      "location": "src/backend/repositories/{module}.py",
+      "includes": [
+        "find_all() with pagination",
+        "find_by_id()",
+        "create()",
+        "update()",
+        "delete()",
+        "count()",
+        "MongoDB ObjectId handling",
+        "Timestamp management"
+      ]
+    },
+    "router": {
+      "description": "FastAPI endpoints for the feature",
+      "location": "src/backend/routers/{module}.py",
+      "includes": [
+        "GET / - list with pagination",
+        "POST / - create",
+        "GET /{id} - retrieve",
+        "PUT /{id} - update",
+        "DELETE /{id} - delete",
+        "Error handling",
+        "Status codes",
+        "Route documentation"
+      ]
+    },
+    "tests": {
+      "description": "Unit test template",
+      "location": "tests/test_{module}.py",
+      "includes": [
+        "Test list operation",
+        "Test create operation",
+        "Test read operation",
+        "Test update operation",
+        "Test delete operation",
+        "FastAPI TestClient usage"
+      ]
+    },
+    "integration_code": {
+      "description": "Code snippets to integrate generated components",
+      "updates": [
+        "src/app.py - import and register router",
+        "src/backend/database.py - collection initialization"
+      ]
+    }
+  },
+  "integration_steps": {
+    "step_1": {
+      "title": "Create Model File",
+      "action": "Create src/backend/models/{module}.py with generated code",
+      "importance": "required"
+    },
+    "step_2": {
+      "title": "Create Repository File",
+      "action": "Create src/backend/repositories/{module}.py with generated code",
+      "importance": "required"
+    },
+    "step_3": {
+      "title": "Create Router File",
+      "action": "Create src/backend/routers/{module}.py with generated code",
+      "importance": "required"
+    },
+    "step_4": {
+      "title": "Update Database Config",
+      "action": "Add collection to src/backend/database.py",
+      "importance": "required"
+    },
+    "step_5": {
+      "title": "Update Main App",
+      "action": "Import and register router in src/app.py",
+      "importance": "required"
+    },
+    "step_6": {
+      "title": "Create Tests",
+      "action": "Create tests/test_{module}.py with test template",
+      "importance": "recommended"
+    },
+    "step_7": {
+      "title": "Add Validators",
+      "action": "Add Pydantic validators for business logic",
+      "importance": "recommended"
+    },
+    "step_8": {
+      "title": "Add Permissions",
+      "action": "Add authorization checks if needed",
+      "importance": "optional"
+    }
+  },
+  "best_practices": [
+    "Follow naming conventions (plural snake_case for modules)",
+    "Include type hints on all functions",
+    "Add comprehensive docstrings",
+    "Use Pydantic validators for business rules",
+    "Include pagination on list endpoints",
+    "Handle ObjectId conversion properly",
+    "Return appropriate HTTP status codes",
+    "Add error messages for debugging",
+    "Create database indexes for frequently queried fields",
+    "Write unit tests for all endpoints"
+  ],
+  "performance_tips": [
+    "Use skip/limit for pagination",
+    "Create indexes on frequently queried fields",
+    "Use MongoDB aggregation for complex queries",
+    "Batch operations for bulk inserts",
+    "Cache frequently accessed data",
+    "Use lazy loading where appropriate"
+  ],
+  "security_considerations": [
+    "Add authentication checks to routes",
+    "Validate all input with Pydantic",
+    "Use custom validators for business rules",
+    "Never expose internal IDs in responses",
+    "Implement rate limiting for public endpoints",
+    "Add audit logging for sensitive operations",
+    "Use environment variables for secrets",
+    "Sanitize error messages",
+    "Implement CORS if needed",
+    "Use HTTPS in production"
+  ]
+}
